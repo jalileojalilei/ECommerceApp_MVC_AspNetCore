@@ -23,7 +23,7 @@ namespace EcommerceWeb.Areas.Admin.Controllers
             return View(objProductList);
         }
 
-        public IActionResult Create()
+        public IActionResult Upsert(int? id)
         {
 
             //ViewBag.CategoryList = CategoryList;  
@@ -36,8 +36,18 @@ namespace EcommerceWeb.Areas.Admin.Controllers
                 }),
                 Product = new Product()
             };
+            if(id == null || id == 0)
+            {
+                // create
+                return View(productVM);
+            }
+            else
+            {
+                // update
+                productVM.Product = _unitOfWork.Product.Get(u => u.Id == id);
+                return View(productVM);
 
-            return View(productVM);
+            }
         }
 
         [HttpPost]
